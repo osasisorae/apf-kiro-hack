@@ -1,0 +1,52 @@
+The Agentic Architecture of Spirit Journal
+An agentic framework is not a single model; it's a multi-component system designed to reason, plan, and use tools to accomplish complex tasks. We'll model it on a "team of specialists" managed by a central orchestrator.
+
+Conceptual Diagram (How it works):
+User Query → [Spirit Core Orchestrator] → [Team of Specialist Agents] → [Toolbox & Memory] → Synthesized Response → User
+
+Layer 1: The Spirit Core Orchestrator (The "Brain")
+This is the central nervous system of your agent. It replaces your current simple /api/chat endpoint. Built using a framework like LangGraph, it acts as a state machine that manages the entire workflow.
+
+Its primary jobs are:
+
+Intent Recognition: When a user types a prompt (e.g., "How did I trade Gold last week and what's the chart look like now?"), the Orchestrator's first job is to understand the intent. It recognizes this is a multi-step query requiring both personal data retrieval and real-time market data.
+Planning & Delegation: It creates a plan of action.
+Step 1: I need to get the user's trade history for 'Gold' from last week. → Delegate to TraderAnalystAgent.
+Step 2: I need to get the current TradingView chart for 'Gold'. → Delegate to MarketDataAgent.
+Step 3: I need to combine these two pieces of information into a coherent answer. → Synthesize the final response.
+State Management: It holds the "memory" of the current conversation, ensuring context is maintained across multiple steps.
+Layer 2: The Team of Specialist Agents (The "Specialists")
+These are individual LLM-powered chains, each with a specific purpose and access to a limited set of tools. The Orchestrator calls them as needed.
+
+TraderAnalystAgent (The Performance Coach):
+Purpose: To answer any question about the user's personal trading history.
+Tools: Has exclusive access to the Aurum database APIs (get_trade_history, get_journal_entries, calculate_win_rate, get_account_stats).
+Example Prompt: "What was my P&L on my $10k account last Tuesday?"
+MarketDataAgent (The Market Analyst):
+Purpose: To provide real-time, external market information.
+Tools: Has access to the OANDA API for live prices and the TradingView Widget Generator to create and display charts.
+Example Prompt: "Show me the 4-hour chart for EUR/USD with RSI."
+JournalPsychologistAgent (The AGI Vision):
+Purpose: To analyze the qualitative data in the user's journal entries. This is your key differentiator.
+Tools: Uses advanced LLM prompting techniques for sentiment analysis, emotional pattern recognition, and behavioral feedback. It can access and analyze all of the user's journal entries.
+Example Prompt: "Review my last 10 journal entries. What emotional patterns do you see? Am I more confident or fearful?"
+ToolAgent (The Utility Player):
+Purpose: To handle simple, deterministic tasks.
+Tools: Has access to the Calculator and potentially other simple utilities.
+Example Prompt: "What is 0.25% of 25000?"
+Layer 3: The Toolbox & Memory (The "Knowledge & Skills")
+This is what your agents have access to.
+
+Toolbox (APIs & Functions):
+
+aurum_db_api: Securely interacts with your Neon database to fetch user-specific data.
+oanda_api: Gets live price feeds.
+tradingview_widget_generator: A function that generates the necessary code to display a TradingView chart in the chat.
+calculator_tool: A simple math function.
+image_storage_api: (For the future) A function to save chart screenshots and link them to a journal entry.
+notification_service_api: (For the future) An API (like Twilio) to send SMS alerts.
+Memory (How Spirit Learns):
+
+Short-Term Memory: The conversation history of the current session, managed by the Orchestrator.
+Long-Term Memory (User-Specific): This is the most crucial part. It's the user's entire trade and journal history stored securely in your Neon DB. The TraderAnalystAgent and JournalPsychologistAgent use this for deep personalization.
+Long-Term Memory (General Knowledge): A vector database (like Pinecone) containing general trading knowledge (books, articles, definitions) to answer questions like "What is a moving average?"

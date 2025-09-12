@@ -1,0 +1,464 @@
+Build a page
+Introduction
+Welcome to our tutorial on creating a comprehensive stock symbol page with accurate, up-to-date data using TradingView’s widgets. This tutorial will show you how to turn a simple webpage into an aesthetically appealing and interactive configuration that offers real-time information about specific stocks. The widgets used will include:
+Ticker Tape
+Symbol Info
+Advanced Chart
+Company Profile
+Fundamental Data
+Technical Analysis
+Top Stories
+You will start with a simple HTML page structure and gradually integrate each TradingView widget. Step-by-step you will learn how to configure each widget from embedded code to precise placement on the page. By the end, you will be able to dynamically change symbols and use the Ticker Tape for navigation, thus providing a navigational mechanism for users to select the stock they want to view.
+Tutorial structure
+The tutorial is divided into four parts:
+Getting started
+Setting up the page structure
+Integrating TradingView Widgets into the page
+Widget integration
+Integrating the Ticker Tape Widget
+Integrating the Symbol Info Widget
+Adding the Advanced Chart Widget
+Integrating the remaining Widgets (Company Profile, Fundamental Data, Technical Analysis, Top Stories)
+Advanced handling
+Dynamically changing the symbol
+Reading the symbol from the query string
+Changing symbol within the Widget options
+Template elements and embedding scripts
+Migrating embed code into template elements
+Cloning template into the document
+Navigational approach
+Using the ticker tape for navigation
+Final result
+To see the final result of this tutorial in action, you can visit the demo page. Here, you’ll be able to explore the finished stock symbol page, complete with integrated TradingView widgets and interactive data display.
+
+
+Getting started
+This guide is designed to help you create a comprehensive stock symbol page using TradingView widgets. This page will provide up-to-date and accurate information about any stock you choose to display. The basic structure for this page will be built using simple HTML, while further functionality will be provided by integrating TradingView’s variety of widgets.
+Setting up the page structure
+Our journey begins with a basic HTML page, serving as the skeleton on which we will build our stock viewing platform. Here’s what that skeleton looks like:
+HTML
+<body>
+    <header>
+        <a id="site-logo" href="#">TradingVista</a>
+        <input type="search" placeholder="Search..." />
+    </header>
+    <nav id="ticker-tape">Ticker Tape</nav>
+    <main>
+        <section id="symbol-info">Symbol Info</section>
+        <section id="advanced-chart">Advanced Chart</section>
+        <section id="company-profile">Company Profile</section>
+        <section id="fundamental-data">Fundamental Data</section>
+        <section id="technical-analysis">Technical Analysis</section>
+        <section id="top-stories">Top Stories</section>
+        <section id="powered-by-tv">
+        </section>
+    </main>
+    <footer>
+    </footer>
+</body>
+
+You can view the starting page here and the source code for the entire starting page here. This includes CSS to style and define the layout.
+NoteWe’ve included an attribution on the page stating that the data and charts are provided by TradingView. This form can be filled out to discuss options regarding the removal of this attribution.
+Integrating TradingView Widgets into the page
+TradingView offers a wide array of widgets designed to provide comprehensive information about a given stock. For this tutorial, we will be integrating the following widgets into our page:
+Ticker Tape
+Symbol Info
+Advanced Chart
+Company Profile
+Fundamental Data
+Technical Analysis
+Top Stories
+Each widget is integrated into the page by embedding code directly into the HTML source. These widgets will be placed into the corresponding <section id="widget-name"></section> element in the code. The integration of each widget will be discussed in detail in the following sections.
+With the basic structure in place, we are ready to start integrating these widgets into our page. Let’s begin!
+
+Widget integration
+In this section, we will discuss the integration of each TradingView widget, with detailed instructions regarding code embedding and widget placement. Each widget provides different insights into a company or stock’s performance, and as such, they will each play a unique role on our web page.
+Matching the widgets to your page design
+All the widgets have two themes to choose from: ‘light’ and ‘dark’. In this tutorial, we will use the ‘light’ theme because it matches our existing page design, which has a white background color.
+TipPlease note that we are also utilizing the isTransparent option for the widget. This ensures a seamless integration into the page by removing the outer border and making the widget appear as part of the page. This feature is especially helpful if your page does not have a pure white or black background color (for the dark theme option).
+Integrating the Ticker Tape Widget
+We’ll start by integrating the Ticker Tape widget into our webpage. The Ticker Tape gives a real-time representation of the performance of a group of symbols.
+Head to the configurator for the Ticker Tape widget, customise the settings as you see fit and then copy the code to be embedded in the page.
+Getting the widget into the page is as simple as copy-pasting the embed code inside the element on the page where you would like it to appear. In this case we want to insert the code inside this element:
+HTML
+<nav id="ticker-tape"></nav>
+
+which would end up looking like this:
+HTML
+<nav id="ticker-tape">
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+            async
+>
+            {
+            "symbols": [
+              {
+                "description": "",
+                "proName": "NASDAQ:TSLA"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:AAPL"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:NVDA"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:MSFT"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:AMZN"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:GOOGL"
+              },
+              {
+                "description": "",
+                "proName": "NASDAQ:META"
+              },
+              {
+                "description": "",
+                "proName": "NYSE:BRK.B"
+              },
+              {
+                "description": "",
+                "proName": "NYSE:LLY"
+              },
+              {
+                "description": "",
+                "proName": "NYSE:UNH"
+              },
+              {
+                "description": "",
+                "proName": "NYSE:V"
+              },
+              {
+                "description": "",
+                "proName": "NYSE:WMT"
+              }
+            ],
+            "showSymbolLogo": true,
+            "colorTheme": "light",
+            "isTransparent": false,
+            "displayMode": "adaptive",
+            "locale": "en"
+             }
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+</nav>
+
+WarningThe majority of widgets require that either the height is defined within the widget options, or if ‘Use container size’ is selected that the container element should have a specific height defined by the CSS rule / style for that element.
+However, Ticker Tape is one of the widgets which doesn’t require this and will instead occupy enough height to display it’s contents automatically. So we can adjust the skeleton styles to remove the CSS manually setting a height for the #ticker-tape element.
+CSS
+.skeleton,
+#ticker-tape, /* ← remove this line*/
+#symbol-info,
+#advanced-chart,
+#company-profile,
+#fundamental-data,
+#technical-analysis,
+#top-stories,
+#ticker-tape {
+    text-align: center;
+    padding: 16px;
+    font-size: 24px;
+    background: rgba(0, 0, 0, 0.075);
+    border-radius: 4px;
+}
+
+#ticker-tape {
+    width: 100%;
+    margin-bottom: var(--gap-size);
+    height: 75px; /* ← remove this line*/
+}
+
+This will remove the skeleton styling on that element and set height to the default of auto.
+Integrating the Symbol Info Widget
+Next, we will add the Symbol Info widget, which provides useful details related to a specific symbol. The widget displays key summary metrics for the symbol, including the current price and fundamental data such as the symbol’s market cap.
+Symbol Info is another widget which doesn’t require a specific height to be set for the container and will instead automatically adjust it’s height to fit it’s content.
+So adding the Symbol info widget follows the same steps as the Ticker Tape widget.
+Configure the widget on the Wizard page
+Grab the embed code
+paste it within the desired element on the page (<section id="symbol-info"></section>)
+and adjust the CSS to remove the skeleton styling and predefined height.
+You should end up with the HTML element looking like this:
+HTML
+<section id="symbol-info">
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js"
+            async
+>
+            {
+            "symbol": "NASDAQ:AAPL",
+            "width": "100%",
+            "locale": "en",
+            "colorTheme": "light",
+            "isTransparent": true
+             }
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+</section>
+
+and the CSS being updated like this:
+CSS
+.skeleton,
+#symbol-info, /* ← remove this line*/
+#advanced-chart,
+#company-profile,
+#fundamental-data,
+
+#symbol-info {
+    height: 175px; /* ← remove this line*/
+}
+
+TipNote that we are using the isTransparent option for the widget so that it fits more seamlessly into the page since the outer border will be removed and the widget will appear part of the page.
+Adding the Advanced Chart Widget
+The Advanced Chart widget is one of the most valuable widgets for visualizing stock data. It provides various chart types, technical indicators, and drawing tools for efficient technical analysis.
+Just like all the widgets, integrating the Advanced Chart widget is as simple as configuring your options, copying the embed code, and pasting it into the desired section of your page.
+However, this is the first widget we’ve encountered during this tutorial which offers additional configuration for height of the widget. When ‘Use container size’ is selected then the widget will automatically grow to fill the size of the containing widget. Thus it is important to define a height for the container element if you make use of the autosize option.
+In this case we are setting the height of the container to 500px via the CSS rules for that element:
+CSS
+#advanced-chart {
+    height: 500px;
+}
+
+Don’t forget to remove the skeleton styles for the #advanced-chart selector as you’ve previously done for the Ticker Tape and Symbol Info widgets.
+Integrating the remaining Widgets (Company Profile, Fundamental Data, Technical Analysis, Top Stories)
+The remaining widgets, namely the Company Profile, Fundamental Data, Technical Analysis, and Top Stories widgets provide detailed information about the company, its financials, technical analysis of the stock, and news related to the company respectively.
+Embed each of these widgets in their respective <section id=""></section> that matches the widget name. You can get the code for these widgets like the others from TradingView’s widget page.
+Remember to adjust parameters such as "symbol", "colorTheme", "isTransparent" and "locale" etc., to match your specific requirements and match the style of your page.
+That’s it — you’ve now integrated each of the TradingView widgets into your webpage. This combination will provide an in-depth overview of any stock your page visitors choose to view.
+
+Dynamically changing the symbol
+Once you’ve laid down the groundwork and embedded TradingView’s widgets into your webpage, you may want to dive deeper and gain more control over your page’s functionality. In this section, we’ll cover how we can dynamically change the stock symbol of interest and how to cleanly manage embed scripts with template elements.
+So far, we have created a page for a single stock symbol (AAPL). However, we don’t want to restrict the fun to just one symbol. Let’s make it work for a wide range of symbols.
+On the server-side, we can send different content depending on the page’s route (URL path) and modify the symbol names specified in the widget options.
+For instance, if we want to display the details for the NVDA symbol instead of AAPL, we simply need to update the value of "symbol" in the options.
+JS
+{
+    /* ... the other options ...*/
+    "symbol": "NASDAQ:NVDA" /* ← changed from NASDAQ:AAPL */
+}
+
+Symbol names are defined using the syntax {EXCHANGE}:{NAME}.
+TradingView widgets can automatically detect symbols through the tvwidgetsymbol URL parameter. For example, using https://example.com/?tvwidgetsymbol=NASDAQ:AAPL will display the Apple stock chart without any JavaScript configuration.
+While it’s possible to use a custom parameter (like symbol) and JavaScript to set the symbol manually, the tvwidgetsymbol parameter is recommended for single-symbol widgets as it works automatically. 🎉
+The following widgets (used in this tutorial) support using the query parameter name of tvwidgetsymbol to define the symbol name:
+Advanced Chart
+Symbol Info
+Company Profile
+Fundamental Data
+Technical Analysis
+Top Stories (when the ‘Feed’ setting is set to ‘Symbol’)
+Ticker Tape is excluded because it isn’t specific to a single symbol but rather is used to show the prices for multiple symbols.
+
+
+Navigation
+Creating a user-friendly page is essential for a good user experience. Navigation plays a crucial role in this. TradingView widgets provide customization options that we can use to improve navigation. The Ticker Tape widget, which displays a scrolling list of symbols, can be customized to redirect clicks on symbols to your own page instead of the default TradingView webpage. In this section, we will demonstrate how to use JavaScript to enable this functionality.
+Using the Ticker Tape for navigation
+Customize the Ticker Tape widget by adjusting the largeChartUrl property in the widget’s options. This field allows you to define your custom URL to which the user will be redirected upon clicking a symbol in the Ticker Tape.
+Here is an example of how to do this:
+HTML
+<script
+  type="text/javascript"
+  src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+  async
+>
+    {
+        /* other options ... */
+        "largeChartUrl": "https://your-site.com/your-symbols-page"
+    }
+</script>
+
+By setting the current page URL as largeChartUrl, the page reloads with the selected symbol name in the query string when a symbol is clicked. The selected symbol name will be appended to the URL as a tvwidgetsymbol parameter.
+Given that we have already set up the page to display data corresponding to the symbol in the URL query string, this will automatically result in the page displaying data for the symbol the user clicked on within the Ticker Tape. This is a straightforward yet powerful navigation feature for your users.
+With this approach, we’ve effectively utilized the customizability of the TradingView widgets to design a navigational method that significantly improves user interactivity and experience on our webpage. Now, users can seamlessly navigate through various stocks and view their preferred stock’s data.
+
+Conclusion
+Congratulations on reaching the end of the TradingView widgets integration tutorial! Throughout this guide, we have familiarized ourselves with a few vital TradingView widgets, integrated these widgets within our webpage, enabled advanced handling options, and crafted a user-friendly navigation mechanism.
+We dived into the specifics of integrating several essential widgets such as the Ticker Tape, Symbol Info, Advanced Chart, and more. By carefully choosing color themes, setting transparency options, and configuring width and height options, we’ve ensured these widgets blend seamlessly with our webpage’s aesthetics.
+In advanced handling, we explored dynamic symbol changes and embedding scripts using templates elements, setting a solid foundation for a more maintainable and dynamic webpage.
+For enhancing user interaction, we utilized the Ticker Tape widget in a novel way. We crafted our navigation mechanism by setting a custom URL in the widget, allowing users to change the displayed stock data dynamically.
+To see the final result of this tutorial in action, view the demo page.
+Thank you for following along, and we hope this tutorial has equipped you with the skills and insight to enhance your webpage using TradingView’s widgets further. Happy coding!
+
+
+How to configure lazy loading
+Overview
+This guide demonstrates how to build a web element that lazy-loads its content only when it becomes visible in the viewport.
+Lazy loading allows widgets to load only when they are needed. Implementing lazy loading provides several key benefits:
+Reduced initial page load time and bandwidth usage
+Lower memory consumption for off-screen content
+Improved performance metrics like Time to Interactive
+Better user experience, especially on mobile devices
+How it works
+A TradingView widget is wrapped inside the HTML <template> tag, so the element is not rendered or executed immediately.
+The <template> content is placed inside a custom lazy-load element that handles lazy loading.
+The Intersection Observer API detects when the element becomes visible.
+When visible, the element clones the template content and adds it to the DOM.
+Scripts inside the template are then executed.
+Follow the steps below to implement a lazy-loading element.
+1. Define the element in JavaScript
+Create a new custom HTML element using JavaScript. In this example, we define a <lazy-load> element by extending the built-in HTMLElement class.
+The <lazy-load> element uses the IntersectionObserver API to detect when it enters the viewport. This allows content to be loaded only when the user scrolls near it.
+You can place the code below in a separate file, such as lazy-load.js.
+class LazyLoad extends HTMLElement {
+  constructor() {
+    super();
+    this._hasLoaded = false;
+    this._observer = null;
+  }
+
+  connectedCallback() {
+    // Set up 'IntersectionObserver' interface to monitor when the element becomes visible
+    this._observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this._hasLoaded) {
+            this._loadContent();
+            this._hasLoaded = true;
+            this._observer.disconnect();
+
+            // Hide the scroll indicator
+            document.querySelector(".scroll-indicator").style.display = "none";
+          }
+        });
+      },
+      {
+        rootMargin: "50px",
+        threshold: 0.1,
+      }
+    );
+
+    this._observer.observe(this);
+  }
+
+  disconnectedCallback() {
+    if (this._observer) {
+      this._observer.disconnect();
+    }
+  }
+
+  _loadContent() {
+    const template = this.querySelector("template");
+    if (template) {
+      // Clone the template content and append it
+      const content = template.content.cloneNode(true);
+      // Remove the template
+      template.remove();
+      this.appendChild(content);
+
+      // Manually create and execute any scripts
+      content.querySelectorAll("script").forEach((oldScript) => {
+        const newScript = document.createElement("script");
+
+        // Copy all attributes
+        Array.from(oldScript.attributes).forEach((attr) => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+
+        // Copy inline script content
+        newScript.textContent = oldScript.textContent;
+
+        // Replace the old script with the new one
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+  }
+}
+
+// Register the custom element
+customElements.define("lazy-load", LazyLoad);
+
+2. Define the widget in HTML
+Wrap your widget inside the <template> tag. This prevents the widget from rendering or executing immediately.
+Wrap <template> in a custom <lazy-load> element. This controls when the widget is actually loaded.
+<!-- Lazy-loading element -->
+<lazy-load>
+    <template>
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <div class="tradingview-widget-copyright">
+            <a
+              href="https://www.tradingview.com/"
+              rel="noopener nofollow"
+              target="_blank"
+              ><span class="blue-text"
+                >Track all markets on TradingView</span
+              ></a
+            >
+          </div>
+          <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
+            async
+          >
+              {
+              "symbol": "FX:EURUSD",
+              "width": 350,
+              "height": 220,
+              "locale": "en",
+              "dateRange": "12M",
+              "colorTheme": "light",
+              "isTransparent": false,
+              "autosize": false,
+              "largeChartUrl": ""
+            }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </template>
+</lazy-load>
+
+3. Load the script
+To make the <lazy-load> element work, load the lazy-load.js script in your HTML file using the <script> element.
+<script src="./lazy-load.js"></script>
+
+It is recommended that this script is included before any <lazy-load> elements are rendered, typically inside the <head> element.
+
+How to set widget size
+When embedding TradingView widgets into your website, it’s important to set their sizes correctly to ensure optimal display and functionality. Otherwise, the widget may appear collapsed or cut off.
+There are two ways to set widget size: enabling the Use container size setting or specifying a fixed width and height.
+With Use container size
+The Use container size setting allows the widget to automatically adjust its dimensions to fit within its container, a block-level element such as <div>. This setting is useful for creating responsive designs as the widget adapts to different screen sizes and layouts. Therefore, you do not need to specify exact pixel values for each screen size.
+However, the container element should have a defined height for this setting to work correctly. Without a set height, the container defaults to a short height, making the widget appear collapsed or cut off.
+Set the container height and width
+To ensure your widget displays correctly when Use container size is enabled, you need to set a height for the container element. You can achieve this using CSS:
+.widget-container {
+  height: 500px;
+}
+
+By applying a height to the container, you provide the necessary vertical space for the widget to expand into.
+Since block-level elements automatically stretch to fill the available width, you do not need to specify a width for the container. The widget will expand horizontally to match its container. If you want to limit the widget’s width, you can set a specific width on the container using CSS:
+.widget-container {
+  width: 800px;
+  height: 500px;
+}
+
+This will constrain the widget’s width to 800 pixels while still allowing it to fill the 500-pixel height.
+Example
+In the screenshot below, the Advanced Chart widget is defined within a <div> container. Although the Use container size setting is enabled, the container’s height is not specified, causing the widget to appear collapsed.
+The widget is collapsed because the container height is not specified.
+To fix this, set a height for the <div> container in the CSS file, for example height: 500px;. The widget will be displayed correctly, without appearing collapsed.
+The widget looks as expected because the container height is specified.
+With fixed height and width
+If you prefer to have full control over the widget’s dimensions, you can disable Use container size. In this case, you need to specify a fixed width and height for the widget within the widget’s constructor.
+NoteWith Use container size disabled and width/height set, the widget will always display at these exact dimensions regardless of the container size.
+In the screenshot below, a <div> container has a defined size, highlighted by the light-blue background color. The Advanced Chart widget is defined within this container. Despite the container’s size, the widget maintains its specified width and height, as the Use container size setting is disabled.
+
+

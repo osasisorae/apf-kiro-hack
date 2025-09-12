@@ -1,0 +1,318 @@
+Account Endpoints
+
+
+GET	/v3/accounts
+Get a list of all Accounts authorized for the provided token.
+GET	/v3/accounts/{accountID}
+Get the full details for a single Account that a client has access to. Full pending Order, open Trade and open Position representations are provided.
+GET	/v3/accounts/{accountID}/summary
+Get a summary for a single Account that a client has access to.
+GET	/v3/accounts/{accountID}/instruments
+Get the list of tradeable instruments for the given Account. The list of tradeable instruments is dependent on the regulatory division that the Account is located in, thus should be the same for all Accounts owned by a single user.
+PATCH	/v3/accounts/{accountID}/configuration
+Set the client-configurable portions of an Account.
+GET	/v3/accounts/{accountID}/changes
+Endpoint used to poll an Account for its current state and changes since a specified TransactionID.
+
+
+
+Instrument Endpoints
+
+
+GET	/v3/instruments/{instrument}/candles
+Fetch candlestick data for an instrument.
+
+
+Order Endpoints
+
+
+POST	/v3/accounts/{accountID}/orders
+Create an Order for an Account
+GET	/v3/accounts/{accountID}/orders
+Get a list of Orders for an Account
+GET	/v3/accounts/{accountID}/pendingOrders
+List all pending Orders in an Account
+GET	/v3/accounts/{accountID}/orders/{orderSpecifier}
+Get details for a single Order in an Account
+PUT	/v3/accounts/{accountID}/orders/{orderSpecifier}
+Replace an Order in an Account by simultaneously cancelling it and creating a replacement Order
+PUT	/v3/accounts/{accountID}/orders/{orderSpecifier}/cancel
+Cancel a pending Order in an Account
+PUT	/v3/accounts/{accountID}/orders/{orderSpecifier}/clientExtensions
+Update the Client Extensions for an Order in an Account. Do not set, modify, or delete clientExtensions if your account is associated with MT4.
+
+
+Trade Endpoints
+
+
+GET	/v3/accounts/{accountID}/trades
+Get a list of Trades for an Account
+GET	/v3/accounts/{accountID}/openTrades
+Get the list of open Trades for an Account
+GET	/v3/accounts/{accountID}/trades/{tradeSpecifier}
+Get the details of a specific Trade in an Account
+PUT	/v3/accounts/{accountID}/trades/{tradeSpecifier}/close
+Close (partially or fully) a specific open Trade in an Account
+PUT	/v3/accounts/{accountID}/trades/{tradeSpecifier}/clientExtensions
+Update the Client Extensions for a Trade. Do not add, update, or delete the Client Extensions if your account is associated with MT4.
+PUT	/v3/accounts/{accountID}/trades/{tradeSpecifier}/orders
+Create, replace and cancel a Trade’s dependent Orders (Take Profit, Stop Loss and Trailing Stop Loss) through the Trade itself
+
+
+Position Endpoints
+
+
+GET	/v3/accounts/{accountID}/positions
+List all Positions for an Account. The Positions returned are for every instrument that has had a position during the lifetime of the Account.
+GET	/v3/accounts/{accountID}/openPositions
+List all open Positions for an Account. An open Position is a Position in an Account that currently has a Trade opened for it.
+GET	/v3/accounts/{accountID}/positions/{instrument}
+Get the details of a single Instrument’s Position in an Account. The Position may be open or not.
+PUT	/v3/accounts/{accountID}/positions/{instrument}/close
+Closeout the open Position for a specific instrument in an Account.
+
+
+Transaction Endpoints
+
+
+GET	/v3/accounts/{accountID}/transactions
+Get a list of Transactions pages that satisfy a time-based Transaction query.
+
+
+Pricing Endpoints
+
+
+GET	/v3/accounts/{accountID}/candles/latest
+Get dancing bears and most recently completed candles within an Account for specified combinations of instrument, granularity, and price component.
+GET	/v3/accounts/{accountID}/pricing
+Get pricing information for a specified list of Instruments within an Account.
+GET	/v3/accounts/{accountID}/pricing/stream
+Get a stream of Account Prices starting from when the request is made. This pricing stream does not include every single price created for the Account, but instead will provide at most 4 prices per second (every 250 milliseconds) for each instrument being requested. If more than one price is created for an instrument during the 250 millisecond window, only the price in effect at the end of the window is sent. This means that during periods of rapid price movement, subscribers to this stream will not be sent every price. Pricing windows for different connections to the price stream are not all aligned in the same way (i.e. they are not all aligned to the top of the second). This means that during periods of rapid price movement, different subscribers may observe different prices depending on their alignment.
+Note: This endpoint is served by the streaming URLs.
+GET	/v3/accounts/{accountID}/instruments/{instrument}/candles
+Fetch candlestick data for an instrument.
+
+
+
+Account Definitions
+
+
+AccountID	The string representation of an Account Identifier.
+Account	The full details of a client’s Account. This includes full open Trade, open Position and pending Order representation.
+AccountChangesState	An AccountState Object is used to represent an Account’s current price-dependent state. Price-dependent Account state is dependent on OANDA’s current Prices, and includes things like unrealized PL, NAV and Trailing Stop Loss Order state. Fields will be omitted if their value has not changed since the specified transaction ID.
+AccountProperties	Properties related to an Account.
+GuaranteedStopLossOrderParameters	The current mutability and hedging settings related to guaranteed Stop Loss orders.
+GuaranteedStopLossOrderMode	The overall behaviour of the Account regarding guaranteed Stop Loss Orders.
+GuaranteedStopLossOrderMutability	For Accounts that support guaranteed Stop Loss Orders, describes the actions that can be performed on guaranteed Stop Loss Orders.
+AccountSummary	A summary representation of a client’s Account. The AccountSummary does not provide a full specification of pending Orders, open Trades and Positions.
+AccumulatedAccountState	The mutable state of a client’s Account.
+CalculatedAccountState	The dynamically calculated state of a client’s Account.
+AccountChanges	An AccountChanges Object is used to represent the changes to an Account’s Orders, Trades and Positions since a specified Account TransactionID in the past.
+AccountFinancingMode	The financing mode of an Account
+UserAttributes	Contains the attributes of a user.
+PositionAggregationMode	The way that position values for an Account are calculated and aggregated.
+
+
+Instrument Definitions
+
+
+CandlestickGranularity	The granularity of a candlestick
+WeeklyAlignment	The day of the week to use for candlestick granularities with weekly alignment.
+Candlestick	The Candlestick representation
+CandlestickData	The price data (open, high, low, close) for the Candlestick representation.
+CandlestickResponse	Response containing instrument, granularity, and list of candles.
+
+
+Order Definitions
+
+
+Orders
+The specification of all Orders supported by the platform.
+
+Order	The base Order definition specifies the properties that are common to all Orders.
+MarketOrder	A MarketOrder is an order that is filled immediately upon creation using the current market price.
+FixedPriceOrder	A FixedPriceOrder is an order that is filled immediately upon creation using a fixed price.
+LimitOrder	A LimitOrder is an order that is created with a price threshold, and will only be filled by a price that is equal to or better than the threshold.
+StopOrder	A StopOrder is an order that is created with a price threshold, and will only be filled by a price that is equal to or worse than the threshold.
+MarketIfTouchedOrder	A MarketIfTouchedOrder is an order that is created with a price threshold, and will only be filled by a market price that touches or crosses the threshold.
+TakeProfitOrder	A TakeProfitOrder is an order that is linked to an open Trade and created with a price threshold. The Order will be filled (closing the Trade) by the first price that is equal to or better than the threshold. A TakeProfitOrder cannot be used to open a new Position.
+StopLossOrder	A StopLossOrder is an order that is linked to an open Trade and created with a price threshold. The Order will be filled (closing the Trade) by the first price that is equal to or worse than the threshold. A StopLossOrder cannot be used to open a new Position.
+GuaranteedStopLossOrder	A GuaranteedStopLossOrder is an order that is linked to an open Trade and created with a price threshold which is guaranteed against slippage that may occur as the market crosses the price set for that order. The Order will be filled (closing the Trade) by the first price that is equal to or worse than the threshold. The price level specified for the GuaranteedStopLossOrder must be at least the configured minimum distance (in price units) away from the entry price for the traded instrument. A GuaranteedStopLossOrder cannot be used to open a new Position.
+TrailingStopLossOrder	A TrailingStopLossOrder is an order that is linked to an open Trade and created with a price distance. The price distance is used to calculate a trailing stop value for the order that is in the losing direction from the market price at the time of the order’s creation. The trailing stop value will follow the market price as it moves in the winning direction, and the order will be filled (closing the Trade) by the first price that is equal to or worse than the trailing stop value. A TrailingStopLossOrder cannot be used to open a new Position.
+Order Requests
+The request specification of all Orders supported by the platform. These objects are used by the API client to create Orders on the platform.
+
+OrderRequest	The base Order specification used when requesting that an Order be created. Each specific Order-type extends this definition.
+MarketOrderRequest	A MarketOrderRequest specifies the parameters that may be set when creating a Market Order.
+LimitOrderRequest	A LimitOrderRequest specifies the parameters that may be set when creating a Limit Order.
+StopOrderRequest	A StopOrderRequest specifies the parameters that may be set when creating a Stop Order.
+MarketIfTouchedOrderRequest	A MarketIfTouchedOrderRequest specifies the parameters that may be set when creating a Market-if-Touched Order.
+TakeProfitOrderRequest	A TakeProfitOrderRequest specifies the parameters that may be set when creating a Take Profit Order.
+StopLossOrderRequest	A StopLossOrderRequest specifies the parameters that may be set when creating a Stop Loss Order. Only one of the price and distance fields may be specified.
+GuaranteedStopLossOrderRequest	A GuaranteedStopLossOrderRequest specifies the parameters that may be set when creating a Guaranteed Stop Loss Order. Only one of the price and distance fields may be specified.
+TrailingStopLossOrderRequest	A TrailingStopLossOrderRequest specifies the parameters that may be set when creating a Trailing Stop Loss Order.
+Order-related Definitions
+OrderID	The Order’s identifier, unique within the Order’s Account.
+OrderType	The type of the Order.
+CancellableOrderType	The type of the Order.
+OrderState	The current state of the Order.
+OrderStateFilter	The state to filter the requested Orders by.
+OrderIdentifier	An OrderIdentifier is used to refer to an Order, and contains both the OrderID and the ClientOrderID.
+OrderSpecifier	The specification of an Order as referred to by clients
+TimeInForce	The time-in-force of an Order. TimeInForce describes how long an Order should remain pending before being automatically cancelled by the execution system.
+OrderPositionFill	Specification of how Positions in the Account are modified when the Order is filled.
+OrderTriggerCondition	Specification of which price component should be used when determining if an Order should be triggered and filled. This allows Orders to be triggered based on the bid, ask, mid, default (ask for buy, bid for sell) or inverse (ask for sell, bid for buy) price depending on the desired behaviour. Orders are always filled using their default price component. This feature is only provided through the REST API. Clients who choose to specify a non-default trigger condition will not see it reflected in any of OANDA’s proprietary or partner trading platforms, their transaction history or their account statements. OANDA platforms always assume that an Order’s trigger condition is set to the default value when indicating the distance from an Order’s trigger price, and will always provide the default trigger condition when creating or modifying an Order. A special restriction applies when creating a Guaranteed Stop Loss Order. In this case the TriggerCondition value must either be “DEFAULT”, or the “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for short trades “DEFAULT” and “ASK” are valid.
+DynamicOrderState	The dynamic state of an Order. This is only relevant to TrailingStopLoss Orders, as no other Order type has dynamic state.
+UnitsAvailableDetails	Representation of many units of an Instrument are available to be traded for both long and short Orders.
+UnitsAvailable	Representation of how many units of an Instrument are available to be traded by an Order depending on its positionFill option.
+GuaranteedStopLossOrderEntryData	Details required by clients creating a Guaranteed Stop Loss Order
+
+
+Trade Definitions
+
+
+TradeID	The Trade’s identifier, unique within the Trade’s Account.
+TradeState	The current state of the Trade.
+TradeStateFilter	The state to filter the Trades by
+TradeSpecifier	The identification of a Trade as referred to by clients
+Trade	The specification of a Trade within an Account. This includes the full representation of the Trade’s dependent Orders in addition to the IDs of those Orders.
+TradeSummary	The summary of a Trade within an Account. This representation does not provide the full details of the Trade’s dependent Orders.
+CalculatedTradeState	The dynamic (calculated) state of an open Trade
+TradePL	The classification of TradePLs.
+
+
+Position Definitions
+
+
+Position	The specification of a Position within an Account.
+PositionSide	The representation of a Position for a single direction (long or short).
+CalculatedPositionState	The dynamic (calculated) state of a Position
+
+
+Transaction Definitions
+
+
+Transactions
+The specification of all Transactions supported by the platform.
+
+Transaction	The base Transaction specification. Specifies properties that are common between all Transactions.
+CreateTransaction	A CreateTransaction represents the creation of an Account.
+CloseTransaction	A CloseTransaction represents the closing of an Account.
+ReopenTransaction	A ReopenTransaction represents the re-opening of a closed Account.
+ClientConfigureTransaction	A ClientConfigureTransaction represents the configuration of an Account by a client.
+ClientConfigureRejectTransaction	A ClientConfigureRejectTransaction represents the rejection of configuration of an Account by a client.
+TransferFundsTransaction	A TransferFundsTransaction represents the transfer of funds in/out of an Account.
+TransferFundsRejectTransaction	A TransferFundsRejectTransaction represents the rejection of the transfer of funds in/out of an Account.
+MarketOrderTransaction	A MarketOrderTransaction represents the creation of a Market Order in the user’s account. A Market Order is an Order that is filled immediately at the current market price. Market Orders can be specialized when they are created to accomplish a specific task: to close a Trade, to closeout a Position or to participate in a Margin closeout.
+MarketOrderRejectTransaction	A MarketOrderRejectTransaction represents the rejection of the creation of a Market Order.
+FixedPriceOrderTransaction	A FixedPriceOrderTransaction represents the creation of a Fixed Price Order in the user’s account. A Fixed Price Order is an Order that is filled immediately at a specified price.
+LimitOrderTransaction	A LimitOrderTransaction represents the creation of a Limit Order in the user’s Account.
+LimitOrderRejectTransaction	A LimitOrderRejectTransaction represents the rejection of the creation of a Limit Order.
+StopOrderTransaction	A StopOrderTransaction represents the creation of a Stop Order in the user’s Account.
+StopOrderRejectTransaction	A StopOrderRejectTransaction represents the rejection of the creation of a Stop Order.
+MarketIfTouchedOrderTransaction	A MarketIfTouchedOrderTransaction represents the creation of a MarketIfTouched Order in the user’s Account.
+MarketIfTouchedOrderRejectTransaction	A MarketIfTouchedOrderRejectTransaction represents the rejection of the creation of a MarketIfTouched Order.
+TakeProfitOrderTransaction	A TakeProfitOrderTransaction represents the creation of a TakeProfit Order in the user’s Account.
+TakeProfitOrderRejectTransaction	A TakeProfitOrderRejectTransaction represents the rejection of the creation of a TakeProfit Order.
+StopLossOrderTransaction	A StopLossOrderTransaction represents the creation of a StopLoss Order in the user’s Account.
+StopLossOrderRejectTransaction	A StopLossOrderRejectTransaction represents the rejection of the creation of a StopLoss Order.
+GuaranteedStopLossOrderTransaction	A GuaranteedStopLossOrderTransaction represents the creation of a GuaranteedStopLoss Order in the user’s Account.
+GuaranteedStopLossOrderRejectTransaction	A GuaranteedStopLossOrderRejectTransaction represents the rejection of the creation of a GuaranteedStopLoss Order.
+TrailingStopLossOrderTransaction	A TrailingStopLossOrderTransaction represents the creation of a TrailingStopLoss Order in the user’s Account.
+TrailingStopLossOrderRejectTransaction	A TrailingStopLossOrderRejectTransaction represents the rejection of the creation of a TrailingStopLoss Order.
+OrderFillTransaction	An OrderFillTransaction represents the filling of an Order in the client’s Account.
+OrderCancelTransaction	An OrderCancelTransaction represents the cancellation of an Order in the client’s Account.
+OrderCancelRejectTransaction	An OrderCancelRejectTransaction represents the rejection of the cancellation of an Order in the client’s Account.
+OrderClientExtensionsModifyTransaction	A OrderClientExtensionsModifyTransaction represents the modification of an Order’s Client Extensions.
+OrderClientExtensionsModifyRejectTransaction	A OrderClientExtensionsModifyRejectTransaction represents the rejection of the modification of an Order’s Client Extensions.
+TradeClientExtensionsModifyTransaction	A TradeClientExtensionsModifyTransaction represents the modification of a Trade’s Client Extensions.
+TradeClientExtensionsModifyRejectTransaction	A TradeClientExtensionsModifyRejectTransaction represents the rejection of the modification of a Trade’s Client Extensions.
+MarginCallEnterTransaction	A MarginCallEnterTransaction is created when an Account enters the margin call state.
+MarginCallExtendTransaction	A MarginCallExtendTransaction is created when the margin call state for an Account has been extended.
+MarginCallExitTransaction	A MarginCallExitTransaction is created when an Account leaves the margin call state.
+DelayedTradeClosureTransaction	A DelayedTradeClosure Transaction is created administratively to indicate open trades that should have been closed but weren’t because the open trades’ instruments were untradeable at the time. Open trades listed in this transaction will be closed once their respective instruments become tradeable.
+DailyFinancingTransaction	A DailyFinancingTransaction represents the daily payment/collection of financing for an Account.
+DividendAdjustmentTransaction	A DividendAdjustment Transaction is created administratively to pay or collect dividend adjustment mounts to or from an Account.
+ResetResettablePLTransaction	A ResetResettablePLTransaction represents the resetting of the Account’s resettable PL counters.
+Transaction-related Definitions
+TransactionID	The unique Transaction identifier within each Account.
+TransactionType	The possible types of a Transaction
+FundingReason	The reason that an Account is being funded.
+MarketOrderReason	The reason that the Market Order was created
+FixedPriceOrderReason	The reason that the Fixed Price Order was created
+LimitOrderReason	The reason that the Limit Order was initiated
+StopOrderReason	The reason that the Stop Order was initiated
+MarketIfTouchedOrderReason	The reason that the Market-if-touched Order was initiated
+TakeProfitOrderReason	The reason that the Take Profit Order was initiated
+StopLossOrderReason	The reason that the Stop Loss Order was initiated
+GuaranteedStopLossOrderReason	The reason that the Guaranteed Stop Loss Order was initiated
+TrailingStopLossOrderReason	The reason that the Trailing Stop Loss Order was initiated
+OrderFillReason	The reason that an Order was filled
+OrderCancelReason	The reason that an Order was cancelled.
+OpenTradeDividendAdjustment	Used to pay or collect a dividend adjustment amount for an open Trade within the Account.
+ClientID	A client-provided identifier, used by clients to refer to their Orders or Trades with an identifier that they have provided.
+ClientTag	A client-provided tag that can contain any data and may be assigned to their Orders or Trades. Tags are typically used to associate groups of Trades and/or Orders together.
+ClientComment	A client-provided comment that can contain any data and may be assigned to their Orders or Trades. Comments are typically used to provide extra context or meaning to an Order or Trade.
+ClientExtensions	A ClientExtensions object allows a client to attach a clientID, tag and comment to Orders and Trades in their Account. Do not set, modify, or delete this field if your account is associated with MT4.
+TakeProfitDetails	TakeProfitDetails specifies the details of a Take Profit Order to be created on behalf of a client. This may happen when an Order is filled that opens a Trade requiring a Take Profit, or when a Trade’s dependent Take Profit Order is modified directly through the Trade.
+StopLossDetails	StopLossDetails specifies the details of a Stop Loss Order to be created on behalf of a client. This may happen when an Order is filled that opens a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss Order is modified directly through the Trade.
+GuaranteedStopLossDetails	GuaranteedStopLossDetails specifies the details of a Guaranteed Stop Loss Order to be created on behalf of a client. This may happen when an Order is filled that opens a Trade requiring a Guaranteed Stop Loss, or when a Trade’s dependent Guaranteed Stop Loss Order is modified directly through the Trade.
+TrailingStopLossDetails	TrailingStopLossDetails specifies the details of a Trailing Stop Loss Order to be created on behalf of a client. This may happen when an Order is filled that opens a Trade requiring a Trailing Stop Loss, or when a Trade’s dependent Trailing Stop Loss Order is modified directly through the Trade.
+TradeOpen	A TradeOpen object represents a Trade for an instrument that was opened in an Account. It is found embedded in Transactions that affect the position of an instrument in the Account, specifically the OrderFill Transaction.
+TradeReduce	A TradeReduce object represents a Trade for an instrument that was reduced (either partially or fully) in an Account. It is found embedded in Transactions that affect the position of an instrument in the account, specifically the OrderFill Transaction.
+MarketOrderTradeClose	A MarketOrderTradeClose specifies the extensions to a Market Order that has been created specifically to close a Trade.
+MarketOrderMarginCloseout	Details for the Market Order extensions specific to a Market Order placed that is part of a Market Order Margin Closeout in a client’s account
+MarketOrderMarginCloseoutReason	The reason that the Market Order was created to perform a margin closeout
+MarketOrderDelayedTradeClose	Details for the Market Order extensions specific to a Market Order placed with the intent of fully closing a specific open trade that should have already been closed but wasn’t due to halted market conditions
+MarketOrderPositionCloseout	A MarketOrderPositionCloseout specifies the extensions to a Market Order when it has been created to closeout a specific Position.
+LiquidityRegenerationSchedule	A LiquidityRegenerationSchedule indicates how liquidity that is used when filling an Order for an instrument is regenerated following the fill. A liquidity regeneration schedule will be in effect until the timestamp of its final step, but may be replaced by a schedule created for an Order of the same instrument that is filled while it is still in effect.
+LiquidityRegenerationScheduleStep	A liquidity regeneration schedule Step indicates the amount of bid and ask liquidity that is used by the Account at a certain time. These amounts will only change at the timestamp of the following step.
+OpenTradeFinancing	OpenTradeFinancing is used to pay/collect daily financing charge for an open Trade within an Account
+PositionFinancing	OpenTradeFinancing is used to pay/collect daily financing charge for a Position within an Account
+RequestID	The request identifier.
+ClientRequestID	A client provided request identifier.
+TransactionRejectReason	The reason that a Transaction was rejected.
+TransactionFilter	A filter that can be used when fetching Transactions
+TransactionHeartbeat	A TransactionHeartbeat object is injected into the Transaction stream to ensure that the HTTP connection remains active.
+
+
+Pricing Definitions
+
+
+ClientPrice	The specification of an Account-specific Price.
+PriceStatus	The status of the Price.
+QuoteHomeConversionFactors	QuoteHomeConversionFactors represents the factors that can be used to convert quantities of a Price’s Instrument’s quote currency into the Account’s home currency.
+HomeConversions	HomeConversions represents the factors to use to convert quantities of a given currency into the Account’s home currency. The conversion factor depends on the scenario the conversion is required for.
+PricingHeartbeat	A PricingHeartbeat object is injected into the Pricing stream to ensure that the HTTP connection remains active.
+CandleSpecification	An instrument name, a granularity, and a price component to get candlestick data for.
+
+
+Pricing Common Definitions
+
+
+PriceValue	The string representation of a Price for a Bucket.
+PriceBucket	A PriceBucket represents a price available for an amount of liquidity
+
+
+Primitives Definitions
+
+
+DecimalNumber	The string representation of a decimal number.
+AccountUnits	The string representation of a quantity of an Account’s home currency.
+Currency	Currency name identifier. Used by clients to refer to currencies.
+Tag	A tag associated with an entity.
+InstrumentName	Instrument name identifier. Used by clients to refer to an Instrument.
+InstrumentType	The type of an Instrument.
+DayOfWeek	The DayOfWeek provides a representation of the day of the week.
+FinancingDayOfWeek	A FinancingDayOfWeek message defines a day of the week when financing charges are debited or credited.
+InstrumentFinancing	Financing data for the instrument.
+Instrument	Full specification of an Instrument.
+DateTime	A date and time value using either RFC3339 or UNIX time representation.
+AcceptDatetimeFormat	DateTime header
+InstrumentCommission	An InstrumentCommission represents an instrument-specific commission
+GuaranteedStopLossOrderModeForInstrument	The overall behaviour of the Account regarding Guaranteed Stop Loss Orders for a specific Instrument.
+GuaranteedStopLossOrderLevelRestriction	A GuaranteedStopLossOrderLevelRestriction represents the total position size that can exist within a given price window for Trades with guaranteed Stop Loss Orders attached for a specific Instrument.
+Direction	In the context of an Order or a Trade, defines whether the units are positive or negative.
+PricingComponent	The Price component(s) to get candlestick data for.
+ConversionFactor	A ConversionFactor contains information used to convert an amount, from an Instrument’s base or quote currency, to the home currency of an Account.
+HomeConversionFactors	A HomeConversionFactors message contains information used to convert amounts, from an Instrument’s base or quote currency, to the home currency of an Account.

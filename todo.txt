@@ -1,0 +1,11 @@
+here's what i want to do. I want you to know that I have one account on oanda but i will be using that one account to run a prop firm containing multiple challange accounts, understand? so we need to build the system properly and in a way that works for our business use case okay? Let's start with cleaning up all the scripts. I think we don't need those scripts anymore, let's clean it up completely and let's completely clean up our database, the only thing we need on the database right now is the user profiles. Then let's build out the full database architecture.
+
+--------------Our Architecture ---------
+We're launching with just one oanda account.
+1. We need a way for the admin to track and top up that oanda account.
+2. We have a way of purchasing new accounts (using korapay) so when a user/client purchases a new account (pro or standard) we need to attach that account to the user.
+3. We have a take a trade section that enables the user/client to take a trade on the major fx pairs. We have built in automatic Stop Losses and Take Profit calculators so when the user clicks buy or sell we do the calculation and put it in there.
+4. When the user takes the trade and we're sure the trade was placed on the oanda, we should store the trade info. (time, pair, journal entry, sl, tp, entry price, status), account type, account id, account balance, user id.
+5. The user should be able to go to the trading history section to view the trading history. This trading history should be able to check the status of the trade (open or closed) then calculate the profit or loss made on the trade.
+
+That's what i need for now.

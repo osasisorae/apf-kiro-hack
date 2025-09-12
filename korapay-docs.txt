@@ -1,0 +1,505 @@
+Checkout Standard
+Checkout Standard provides a simplified and secure flow for collecting payments from customers. It's easy to integrate.
+
+Integrating the Checkout Standard
+
+We'll use examples to show you how to integrate Kora's payment gateway using the Checkout Standard into your product. Feel free to make the necessary adjustments you need to provide a customized experience on your product. In our first example, we'll be using a simple "Pay" button that should load Checkout Standard on a webpage.
+
+Let's get started:
+
+1 - Get your API Keys
+
+Obtain your API Keys from your dashboard. We recommend you integrate using your test keys to avoid changes to your live data or charging real customers while testing.
+
+2 - Add the pay-ins/collections script
+
+Next, you'll need to add the Kora pay-in/collection script to your website or application.
+
+Sample Form
+
+<form>
+    <script src="https://korablobstorage.blob.core.windows.net/modal-bucket/korapay-collections.min.js"></script>
+    <button type="button" onclick="payKorapay()"> Pay </button>
+</form>
+Pay-in Script
+
+<script>
+    function payKorapay() {
+        window.Korapay.initialize({
+            key: "pk_live_*********************",
+            reference: "your-unique-reference",
+            amount: 22000,
+            currency: "NGN",
+            customer: {
+              name: "John Doe",
+              email: "john@doe.com"
+            },
+            notification_url: "https://example.com/webhook"
+        });
+    }
+</script>
+🚧
+Warning!
+
+Avoid exposing your secret key on the client-side (or front end) of your application. Requests to the Kora's API should be initiated from your server.
+3 - Initialize the payment gateway.
+
+Use the Korapay.initialize function to pass the relevant transaction details needed to initialize the payment gateway and start accepting payments.
+
+Set the sample API key with your test mode key obtained from your dashboard. This allows you to test through your Korapay account.
+
+Indicate the amount and currency.
+
+Indicate the customer name and email to show on the gateway as the sender of the transaction.
+
+When you’re ready to accept live payments, replace the test key with your live/production key.
+
+4 - Receive confirmation via webhook
+
+When the payment is successful, we will make a POST request to your webhook URL (as set up in your dashboard, or while initializing the transaction using the key: notification_url) in this format:
+
+Code: Response Format
+
+{
+   "even"t:  "charge.success" //the notification is only sent for successful charge,
+   "data": {
+     	"reference": "KPY-C-cUBkIH&98n8b",
+     	"currency": "NGN",
+     	"amount": "22000", //amount paid by the customer
+     	"amount_expected": "22000", //amount that the customer is expected to pay
+     	"fee": "25",
+     	"status": "success",
+     	"payment_reference": "your-unique-reference", //unique reference sent by the merchant
+     	"transaction_status": "success" //the status of the charge base on the amount paid by the customer. This can either be `success`, `underpaid` or `overpaid`,
+      "metadata": {
+        "internalRef": "JD-12-67",
+        "age": 15,
+        "fixed": true,
+      }
+   }
+}
+Configuration parameters
+
+Field
+Data Type
+Description
+key
+String
+*Required** - Your public key from Korapay. Use the test public key for test transactions and live public key for live transactions
+reference
+String
+*Required** - Your unique transaction reference. Must be unique for every transaction.
+amount
+Integer
+*Required** - Amount to be collected.
+currency
+String
+*Optional** - Currency of the charge, e.g NGN, KES, GHS. The default is NGN (Nigerian Naira)
+customer
+Object
+*Required** - JSON object containing customer details
+customer.name
+String
+*Required **- field in the customer object. Customer name derived from name enquiry.
+customer.email
+String
+*Required** - Field in the customer object. Customer email address
+notification_url
+String
+*Optional** - HTTPS endpoint to send information to on payment termination, success, or failure. This overrides the webhook URL set on your merchant dashboard for this particular transaction
+narration
+String
+*Optional** - Information/narration about the transaction
+channels
+Array[string]
+*Optional** - Methods of payment. E.g, Bank Transfer (bank_transfer), card (card), Pay with Bank (pay_with_bank), Mobile money (mobile_money). Default is [“bank_transfer”][“bank_transfer”]. Note that if only one payment method is available, it cannot be changed to another method.
+default_channel
+String
+*Optional** - Method of payment that should be active by default. E.g Bank Transfer (bank_transfer), card (card), Pay with Bank (pay_with_bank), Mobile money (mobile_money. The payment method selection page is skipped on the first load.
+Note that the default channel must also be specified in the channels parameter.
+metadata
+Object
+*Optional** - It takes a JSON object with a maximum of 5 fields/keys. Empty JSON objects are not allowed.
+Each field name has a maximum length of 20 characters. Allowed characters: A-Z, a-z, 0-9, and -.
+containerId
+String
+*Optional** - ID of the HTML element you want the payment gateway to be contained in. Note that this would reset all styling on this element. The payment gateway would be resized to fit the container. If this is not set, the payment gateway fills the available screen size.
+The recommended size for this container is 400px x 500px (width x height). However, this is not enforced and you can load the checkout in a smaller or larger container.
+onClose
+[Function]
+*Optional** - function to be called when the payment gateway is closed
+onSuccess
+[Function]
+*Optional** - function to be called when the payment is completed successfully
+onFailed
+[Function]
+*Optional** - function to be called when the payment failed
+onTokenized
+[Function]
+Optional - function to be called when card tokenization is completed successfully
+onPending
+[Function]
+*Optional** - sometimes, bank transfers could take some time before they get resolved. In such a case, this function would be called after 20 seconds. This could allow you to manage the experience for your customer by showing a notification or some other information.
+merchant_bears_cost
+Boolean
+*Optional**. This will set who bears the fees of the transaction. If it is set to true, the merchant will bear the fee, while if it is set to false, the customer will bear the fee. By default, it is set to true.
+Interacting with Checkout Standard through the Korapay script
+
+When using Checkout Standard, the payment gateway is opened in an iframe to ensure security. Some functions are exposed to allow interactions with the application when specific events occur during a transaction. These include:
+
+Event	Field
+Succesful Transaction	onSuccess
+Failed Transaction	onFailed
+Payment Modal Closed	onClose
+Card Tokenized	onTokenized
+Bank Transfer Pending	onPending
+You can pass functions into these fields while calling Korapay.initialize as shown in the script below.
+
+Code: Script
+
+<script>
+    function payKorapay() {
+        window.Korapay.initialize({
+            key: "pk_juigfweofyfewby732gwo8923e",
+            reference: "your-unique-reference",
+            amount: 3000,
+            currency: "NGN",
+            customer: {
+              name: "John Doe",
+              email: "john@doe.com"
+            },
+            onClose: function () {
+              // Handle when modal is closed
+            },
+            onSuccess: function (data) {
+              // Handle when payment is successful
+            },
+            onFailed: function (data) {
+              // Handle when payment fails
+            }
+            ...
+        });
+    }
+</script>
+The data returned should have the following fields. Note that no data is returned for the onPending function as the transaction is not yet completed:
+
+Field	Data Type	Description
+amount	String	Transaction Amount
+reference	String	Transaction Reference
+status	String	Transaction Status
+To close the modal programmatically, use the Korapay.close function.
+
+
+Checkout Redirect
+Checkout Redirect lets you securely accept payments without having to embed Kora's payment gateway on your website. It's fast, saves development time and comes with an extra advantage - the redirect functionality.
+
+With the Checkout Redirect option, you can access the Kora payment gateway by making a request from your server to our initialize charge endpoint. We would return a response that includes a Checkout URL that loads the payment gateway where your customers can make secure payments. After payment is completed the customer is returned to any URL specified by you.
+
+Now, let's walk you through integrating Checkout Redirect. 👊🏼
+
+1 - Collect Payment Details
+
+Collecting details from your customer is essential to initializing and tracking the transaction. These details are passed to the initialize charge endpoint.
+
+Please find below the request parameters for the endpoint.
+
+Parameter
+Data Type
+Description
+amount
+Integer
+*Required** - The amount to charge the customer.
+redirect_url
+String
+*Optional** - The URL to redirect your customer when the transaction is complete.
+currency
+String
+*Required** - The currency in which the customer should be charged. For example; NGN, KES, GHS, etc.
+reference
+String
+*Required** - Your transaction reference. Must be unique for every transaction.
+notification_url
+String
+*Optional** - The webhook URL to be called when the transaction is complete.
+narration
+String
+*Optional** - This is the transaction description.
+channels
+Array [String]
+*Optional** - Methods of payment eg. Bank Transfer (bank_transfer), card (card), Pay with Bank (pay_with_bank), Mobile money (mobile_money).
+If only one payment method is available, the customer cannot change to another payment method.
+default_channel
+String
+*Optional** - Method of payment that should be active by default. E.g Bank Transfer (bank_transfer), card (card), Pay with Bank (pay_with_bank), Mobile money (mobile_money). The payment method selection page is skipped on the first load.
+Note that the default channel must also be specified in the channels parameter.
+metadata
+Object
+*Optional** - It takes a JSON object with a maximum of 5 fields/keys. Empty JSON objects are not allowed.
+Each field name has a maximum length of 20 characters. Allowed characters: A-Z, a-z, 0-9, and -.
+customer
+*Required** - This is the JSON object containing the targeted customer information.
+customer.email
+String
+*Required** - The email of the customer to be charged.
+customer.name
+String
+*Optional** - The name of the customer to be charged
+merchant_bears_cost
+Boolean
+*Optional** - This will set who bears the fees of the transaction. If it is set to true, the merchant will bear the fee, while if it is set to false, the customer will bear the fee. By default, it is set to true.
+2 - Initialize Transaction
+
+After collecting the necessary payment details for the transaction. Make a POST request to our initialize charge endpoint.
+
+Endpoint: Initialize Charge
+
+https://api.korapay.com/merchant/api/v1/charges/initialize
+Authorization: Bearer {SECRET_KEY} REQUIRED
+
+This endpoint is protected by the secret key authentication mechanism. So when calling it, append your secret key to the authorization headers.
+
+If the API call is successful, Kora returns the following response:
+
+Code: Response
+
+{
+   “status” : true,
+   “message” : “Charge created successfully” ,
+   “data”: {
+           “reference”: “{{your transaction reference}}”,
+           “checkout_url”: "https://checkout.korapay.com/reference/pay"
+     }
+}
+You should then redirect your customer to the Checkout URL provided in the response to enable them complete their payment. Once the payment is complete or in the event of a failure, Korapay will redirect your customer to your specified redirect_url. The transaction reference will be appended as a query parameter to your redirect_url as well.
+
+https://website_redirect_url/?reference=YOUR_REFERENCE
+
+In a situation where noredirect_url is passed, the customer receives visual confirmation on the completion of the payment and is NOT redirected out of the current webpage.
+
+3 - Verify the Transaction
+
+When the transaction is completed, Kora will redirect your customer to your specified redirect_url and send a webhook notification to the notification_url that was passed in the API request body.
+
+Notice that along with redirecting the customer to your redirect_url, we append the transaction reference as a query parameter.
+
+https://website_redirect_url/?reference=YOUR_REFERENCE
+
+Kora redirects the customer to your redirect_url when the transaction is complete, when the checkout is closed, or when the payment session ends abruptly. This allows you to take full control of your customers' payment experience by enabling you to reinitialise a new session if the current payment session ended abruptly. A perfect use case for this could be when your customer’s session mistakenly closes the payment page while waiting for confirmation of a bank transfer. The customer would be redirected to your ‘redirect_url’, so you can query the transaction status and give visual feedback when the transaction is completed rather than reinitialise another transaction.
+
+It is expected that you retrieve the reference from the URL parameters and call our verify charge endpoint to get the status of the transaction. Make sure to always call direct endpoints from your server, and not from the client-side (frontend) of your application.
+
+🚧
+Heads up!
+
+It is very important to confirm the status of the transaction before you give value to the customer.
+4 - Adding an Event Listener (Optional - for better control)
+
+Before we redirect the customer to your redirect URL, the payment gateway exposes events to the browser. To receive those events, you have to attach an event listener to the browser window as shown in the script below. To ensure security and the fidelity of the messages received, it is important that the appropriate Checkout URL gotten from the initialize endpoint is passed as an argument when attaching an event listener to the browser window.
+
+Event Listener
+
+window.addEventListener(type, handleResponse, checkoutURL);
+function handleResponse(event) {
+    if (event.origin === checkoutURL) {
+        // Handle response
+    }
+}
+// ‘type’ represents the transaction event type and could be one of the following: ‘success’, ‘failed’, ‘pending’, ‘close’.
+The response {event.detail} returned should have the following fields:
+
+Field	Data Type	Description
+result	string	Event being triggered. Could be success, failed, or close.
+data	object	JSON object containing transaction details
+data.amount	string	Transaction Amount
+data.reference	string	Transaction Reference
+data.status	string	Transaction Status
+5 - Receive confirmation via webhook
+
+When the payment is successful, we make a POST request to your webhook URL (as set up in your dashboard or while initializing the transaction using the key: notification_url). This is the format of the response:
+
+Webhook Request Payload
+
+{
+  "event":  "charge.success" // the notification is only sent for successful charge,
+  "data": {
+    "reference": "9965128", // the unique transaction reference
+    "currency": "NGN",
+    "amount": 100000,
+    "fee": 1075,
+    "status": "success",
+    "payment_method": "bank_transfer", // can be bank_transfer, card, pay_with_bank
+    "payment_reference": "9965128" // DEPRECATED the unique transaction reference
+  }
+}
+
+
+Overview
+Our Currency Conversion product enables you to convert funds between various currencies using up-to-date exchange rates. The suite of APIs supports fetching the latest exchange rates, converting currency amounts, and retrieving historical conversion transactions.
+
+📘
+Currently, Kora’s Currency Conversion Product supports the following currency exchange:
+
+Naira to USD
+USD to Naira
+Prerequisites
+
+Here are the prerequisite steps to start using the Currency conversion API;
+
+Create a Kora account here, (if you do not already have one).
+Ensure that your account is activated and Live Mode is turned on.
+Verify that your account has the USD Currency enabled (request access from support@korapay.com).
+Verify that your account is activated for the Currency conversion product (request access from support@korapay.com).
+Ensure your available balance of the currency you want to convert from is sufficiently funded, see how to fund your balance here.
+Important Links
+
+Here are some important links to get you started on Currency conversion on Kora:
+
+Getting Started
+
+Exchange rate API
+Currency conversion API
+Managing Conversions on the Kora dashboard
+Testing Conversions on the Sandbox Environment
+
+Get support for Currency conversion product
+
+If you have any questions or concerns about currency conversion, you may email our support team at support@korapay.com.
+
+
+Exchange Rate API
+You can use the exchange rate API to get the latest rate for any currency pair. It can be used on its own or before starting a currency conversion. However, fetching the exchange rate is a prerequisite to initiating a currency conversion transaction.
+
+To get the latest exchange rate for a currency pair, make a POST request to the exchange rate endpoint;
+
+{{baseurl}}/api/v1/conversions/rates
+
+The request body should have the following parameters:
+
+Field	Data Type	Description
+from_currency	String	The currency from which the user is converting. For example, if you wanted to convert Nigerian Naira to US Dollar, the from_currency will be NGN.
+to_currency	String	The currency to which the user wants to convert funds. For example, if you wanted to convert Nigerian Naira to US Dollar, the to_currency will be USD.
+amount	Number	The amount to be converted (referring to the from_currency).
+reference	String	A string to reference this user. This can be a customer ID, a session ID, or similar, and can be used to reconcile the conversion.
+Here's an example of a response to the request.
+
+Sample Response
+
+{
+  "status": true,
+  "message": "Conversion rate retrieved successfully",
+  "data": {
+    "from_currency": "USD",
+    "to_currency": "NGN",
+    "from_amount": 10,
+    "to_amount": 14400,
+    "rate": 1440,
+    "reference": "1ccdb7da-e732-4610-a17f-5abfb7617d99",
+    "expiry_in_seconds": 25,
+    "expiry_date": "2025-01-01T15:58:18.264Z"
+  }
+}
+
+Currency Conversion API
+Initiate Currency Conversion
+
+Before initiating a conversion, you need to first get the exchange rate for the currency pair you want to convert. Once you have the exchange rate for the currency pair, you can start the conversion by making a POST request to the Initiate Currency Conversion endpoint;
+
+{{baseurl}}/api/v1/conversions/
+
+The request body should have the following parameters:
+
+Field	Data Type	Description
+rate_reference	String	A string to reference the rate that was gotten for the amount.
+amount	Number	The amount to be converted.
+from_currency	String	The currency from which the user is converting. For example, if you wanted to convert Nigerian Naira to US Dollar, the from_currency will be NGN.
+to_currency	String	The currency to which the user wants to convert funds. For example, if you wanted to convert Nigerian Naira to US Dollar, the to_currency will be USD.
+customer_name	String	The name of customer initiating the conversion.
+customer_email	String	The email of the customer initiating the conversion.
+narration	String	The description of the transaction.
+Here's an example of a response to the request:
+
+Sample Response
+
+{
+  "status": true,
+  "message": "Conversion processed successfully",
+  "data": {
+    "converted_amount": "14400.00",
+    "source_amount": "10.00",
+    "destination_currency": "NGN",
+    "exchange_rate": "1440.00",
+    "reference": "1ccdb7da-e732-4610-a17f-5abfb7617d90",
+    "source_currency": "USD",
+    "status": "success"
+  }
+}
+
+Dynamic Currency Conversion
+Dynamic Currency Conversion (DCC) is a real-time conversion service that allows your customers to pay in their local currency while you get settled in your preferred currency. This offers a seamless and familiar checkout experience for your customers.
+
+Here's how Dynamic Currency Conversion works:
+
+Kora converts transaction amount: Our system automatically converts the transaction amount to the customer's local currency using the real-time exchange rate.
+Customer makes payment: The customer sees the total amount in their local currency and proceeds to make the payment.
+Transaction processed: The payment is processed as usual, with the settlement amount converted back to your preferred settlement currency.
+
+Getting Started with Dynamic Currency Conversions
+
+To get started with DCC, follow these steps:
+
+First, you need access to the Currency Conversions service. See here.
+
+Once you have access to Currency Conversions,
+
+Go to Settings > Settlements
+Select the currency for which you want to set this conversions setting (Swap Settlements), and check the "Allow this merchant to settle payments in another currency" checkbox.
+Save changes to enable your preference to take effect.
+
+Initiate a DCC transaction and include the following additional parameters in your payment request:
+
+payment_currency: The currency that the customer pays in (their local currency).
+settlement_currency: The currency in which you want to receive settlement.
+
+Here's an example of a request initiating a DCC transaction:
+
+Sample Request
+
+{
+    "amount": 10000,
+    "currency": "USD",
+    "payment_currency": "NGN",
+    "settlement_currency": "USD",
+    "reference": "your-transaction-reference-001",
+    "narration": "Payment for product Y",
+    "channels": "card",
+    "default_channel": "card",
+    "customer": {
+        "name": "John Doe",
+        "email": "john@email.com"
+    },
+    "notification_url": "https://webhook.site/8d321d8d-397f-4bab-bf4d-7e9ae3afbd50",
+    "metadata":{
+        "key0": "test0"
+    }
+}
+
+The responses to this request would look like this:
+
+Sample Response
+
+{
+    "status": true,
+    "message": "Charge created successfully",
+    "customer": {
+        "reference": "your-transaction-reference-001",
+        "checkout_url": "https://checkout.korapay.com/KPY-PI-202501231hXn08399/pay"
+    }
+}
+
+Some important things to note:
+
+The currency field should indicate the currency of the amount sent for collection.
+Both payment_currency and settlement_currency must be supported by Kora.
+The exchange rate can be marked up in the settlement settings on the dashboard.
+
+If you have any questions or feedback on currency conversions, kindly email our support team at support@korapay.com.

@@ -1,0 +1,49 @@
+{
+  "name": "aurum-prop-firm",
+  "version": "1.0.0",
+  "description": "Aurum Prop Firm - Trading platform with waitlist and dashboard",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "deploy": "vercel --prod",
+    "setup-db": "node scripts/create-users-table.js",
+    "check:oanda": "node scripts/check-oanda.js",
+    "create:trades": "node scripts/create-trades-table.js",
+    "create:journal": "node scripts/create-journal-entries-table.js",
+    "reset:session": "node scripts/reset-session-trades.js",
+    "test:trade-rules": "node scripts/test-trade-rules.js",
+    "trades:close-all": "node scripts/close-all-trades.js",
+    "cleanup:trades": "node scripts/cleanup-trades.js"
+  },
+  "keywords": [
+    "trading",
+    "fintech",
+    "prop-firm",
+    "dashboard",
+    "nextjs"
+  ],
+  "author": "Aurum Prop Firm",
+  "license": "MIT",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^17.2.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.294.0",
+    "next": "^14.0.0",
+    "next-auth": "^4.24.0",
+    "openai": "^5.19.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "typescript": "^5.0.0"
+  }
+}

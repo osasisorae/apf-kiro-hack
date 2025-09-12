@@ -1,0 +1,269 @@
+The Hidden Cost of AI-Powered Development: Why We're Building Fast But Learning Nothing
+
+ Osarenren Isorae
+Osarenren Isorae 
+
+Software Engineer & Algorithmic Trading Expert | Bridging Technology and Finance with AI | Founder, Oblack Technologies
+
+
+September 6, 2025
+The AGI Dream That Keeps Me Up at Night
+
+Here's what I want from AI: I want my agent to look out for me in the weirdest ways. Picture this - I'm deep in code, probably debugging some stupid edge case at 2 AM, and suddenly my AI interrupts: "Hey Osarenren, I noticed you haven't written anything about Meta AI ever. Do you think they're useless, or do you just prefer Anthropic, Google, and Perplexity? Also, I took the liberty to create a draft newsletter article about this gap in your content strategy. Check it out, or I'll get annoyed."
+
+I know AI can't actually get annoyed, but this is the future I'm building toward - agents that think and act autonomously, not just respond to prompts. Osarenren means "God Knows" in Edo language, and honestly, God knows we need AI that truly knows us and anticipates our needs instead of just waiting for our next command.
+
+Right now, we're stuck in the "input-output" age. Garbage in, garbage out. Or if we're lucky, garbage in and slightly less garbage out. That's what we have in many of our systems right now, and it's honestly getting boring. But what I'm obsessed with is building systems that break free from this reactive cycle and start thinking proactively.
+
+The thing is, most people are building AI tools like we're still in 2019, just throwing LLMs at problems and hoping for the best. But I want my agent to be that friend who notices things about me that I don't even notice about myself. The one who's like, "Yo, you've been avoiding React lately, what's up with that? Are you going through a Vue phase, or did something break your heart about JSX?"
+
+The LangChain to LangGraph Evolution: Why Everyone's Going Agentic
+
+Let me tell you about this transition everyone's making from LangChain to LangGraph, and why it matters if you're trying to build anything serious in the AI space.
+
+LangChain was cool when we just wanted to chain prompts together. Simple input-output flows, maybe some memory thrown in there. But as we started building more complex systems - the kind that need to make decisions, backtrack, handle errors, actually think through problems - LangChain started feeling like using a screwdriver to build a house.
+
+Enter LangGraph. This thing is designed for agentic workflows from the ground up. It's built for systems that need to pause, think, make decisions, and sometimes completely change direction based on what they learn. Think of it as the difference between following a recipe and being a chef who can improvise when they realize they're out of garlic.
+
+CrewAI jumped on this wave too, and honestly, they're doing some interesting stuff with multi-agent collaboration. But here's what nobody talks about when they're hyping up these agentic frameworks…
+
+The Brutal Reality of Building with Multiple AI Models
+
+After transitioning from LangChain to LangGraph and experimenting with CrewAI, here's what nobody talks about: the tool structure nightmare.
+
+Anthropic expects one JSON structure for function calls, OpenAI expects another completely different format, Grok has its own special snowflake format, and don't even get me started on Google's approach. This fragmentation makes it brutally hard to build software that combines these models effectively.
+
+You know that feeling when you're trying to use the same cable for three different devices and none of them fit? That's what building with multiple AI models feels like right now.
+
+When I'm vibe coding on Cursor or working with Kiro, switching from Claude Sonnet 4 to GPT-4o reveals these stark differences that'll make you want to throw your laptop out the window. Claude intuitively knows when to use tools to run commands - it sees you trying to install a package and goes "Oh, you need me to run npm install, let me do that for you." Other models just give you the command and tell you to run it yourself like they're reading from a manual.
+
+Claude is honestly monumental for tool calling. I've watched it debug deployment issues by systematically checking logs, running diagnostic commands, and actually reasoning through the problem. Other models desperately need to catch up because this gap is getting embarrassing.
+
+But here's the thing that really gets me - even Claude sometimes makes assumptions about your environment that are completely wrong. It'll try to run a Docker command when you're not even using containers, or assume you're on Linux when you're clearly on macOS. The models are getting better at using tools, but they're still pretty bad at understanding context.
+
+The Token Cost Calculation Hell That's Bankrupting Startups
+
+Here's a problem that's costing startups millions, and I'm probably one of the few people actually talking about it: nobody has accurate token usage tracking.
+
+I spent hours - HOURS - debugging token cost calculations when building with CrewAI because single-task crews and multi-task crews have completely different response structures. You'd think they'd standardize this, right? Wrong. You have to extract costs separately from each response type, write different parsing logic, and pray that they don't change the format in the next update.
+
+It's like if your electricity company randomly decided to change how they format your bill every month. Sometimes they show kilowatt-hours, sometimes they show watts, sometimes they just send you a picture of a lightbulb and expect you to figure it out.
+
+If you think I'm exaggerating, look at the news about AI tools running at a loss due to improper cost calculations. Most companies have no exact figure for:
+
+What they're spending on API calls (some don't even track this)
+Which users are costing how much (essential for pricing tiers)
+What needs improvement beyond generic prompt reduction and caching
+Which models are actually worth their cost for specific use cases
+
+I've seen startups burn through their entire runway because they didn't properly track token usage. They'd launch a feature, see it was popular, then get a $10K API bill at the end of the month. Surprise!
+
+Prompt caching feels ridiculous and non-AGI to me - it's like putting a band-aid on a broken leg. We're optimizing for the wrong metrics. Better collaboration between model providers could save startups millions in cash and development time, but everyone's too busy building their own walled gardens.
+
+The really frustrating part is that each provider has their own way of reporting costs, their own rate limits, their own error handling. Building a multi-model system means you're essentially building three different cost tracking systems and hoping they all work together.
+
+The Production Reality Check: When Vibe Coding Breaks Things
+
+Claude Sonnet 4 is my go-to. Sonnet 4 Thinking when I need it to show its work, Sonnet 3.5 when I'm being cheap - all solid tools. But how good is "good" when you're building production-grade software that real humans depend on?
+
+I've broken production code with vibe coding. Not once, not twice, but enough times that I've developed what I call "AI trust issues." Walking into a company with existing code and trying to patch directly to production servers taught me a harsh lesson that nobody warns you about: understanding each line of code isn't just important for debugging - it's critical for your education as an engineer.
+
+Here's what happens: You ask Claude to fix a bug, it gives you a beautiful, clean solution that looks perfect. You apply it, tests pass, everything seems fine. Then two weeks later, something completely unrelated breaks because the AI's "fix" introduced a subtle side effect that none of your tests caught.
+
+When bugs get introduced (and they will), understanding what went wrong helps you learn how these AI tools think and make decisions. But more importantly, it teaches you about the system you're working on. Every bug is a lesson about the codebase, the business logic, the edge cases that the original developers knew about but never documented.
+
+The cost of coding with AI tools keeps rising - not just in dollars, but in technical debt. While I'm not saying we should dump them, we need to be way smarter about how we use them. The temptation to just copy-paste AI solutions without understanding them is real, and it's dangerous.
+
+I've started doing this thing where I ask the AI to explain its solution before I implement it. "Hey Claude, walk me through why you chose this approach and what could go wrong." Sometimes the AI catches its own mistakes during this explanation. Other times, I realize I don't understand the problem well enough to evaluate the solution.
+
+Perplexity, Google AI, and the Search Revolution We're Ignoring
+
+Let's talk about something everyone's sleeping on: the way AI is changing how we search for and process information. Perplexity isn't just "Google with AI" - it's fundamentally changing how we research and learn.
+
+When I'm building something new, I used to Google individual questions and piece together answers from Stack Overflow, documentation, and random blog posts. Now I ask Perplexity complex, multi-part questions and get synthesized answers with actual sources. It's like having a research assistant who never gets tired and actually reads the documentation.
+
+Google's AI integration is interesting but feels more like they're playing catch-up than innovating. They're so worried about disrupting their ad business that they're building AI tools that feel safe and boring. Perplexity just went "screw it, let's build the best search experience possible."
+
+But here's what's really cool - these AI search tools are getting good at understanding context across queries. I can ask Perplexity about a React optimization technique, then follow up with "how does this compare to Vue's approach" and it remembers what "this" refers to. That's the kind of conversational intelligence that makes research feel natural instead of mechanical.
+
+The real game-changer is when these search capabilities get integrated into development tools. Imagine your IDE automatically searching for relevant solutions as you code, or your AI pair programmer pulling in the latest best practices without you having to ask.
+
+The $300 Learning Experiment: What Prompt-to-Code Tools Actually Teach Us
+
+I've spent hundreds of dollars testing Google's Code Builder, Lovable, Cursor, Replit, and others. Not because these tools are bad - some are actually pretty impressive - but because we have a fundamental human flaw we're ignoring: we don't know what we want, and we learn as we go.
+
+This is the dirty secret of software development that nobody talks about in polished case studies. Requirements change, users surprise you, markets shift. The beautiful specifications you write at the beginning bear little resemblance to what you actually build.
+
+Google's Code Builder feels like it was designed by people who think software development is a linear process. You give it requirements, it spits out code, done. But real development is messy, iterative, full of "oh shit, we need to handle this edge case" moments.
+
+Lovable has this interesting approach where it tries to understand your business logic before generating code. I appreciate the intent, but it often feels like I'm spending more time explaining what I want than it would take to just build it myself.
+
+Replit's AI features are getting better, but they still feel like they're optimized for toy projects rather than serious applications. The code generation is fast, but the architectural decisions are often questionable.
+
+Cursor is probably the most mature of the bunch. The way it integrates AI assistance into the actual coding process feels natural. But even Cursor sometimes generates solutions that work but aren't maintainable long-term.
+
+Shout out to Kiro (I'm currently in their hackathon) - their .spec feature actually helps you think through what you want to build before you start coding. They create design specifications and task lists that force you to consider the architecture, the user experience, the technical constraints. When you click "start," an agentic panel opens up that's genuinely impressive.
+
+My first experience with Kiro gave me something I'd never had with any other tool: a clean, complete execution. No interruptions after 25 tool calls like Cursor does when it hits some internal limit. No "full execution" that ends up being completely wrong like Replit's ambitious but ultimately useless attempts. Just clean execution matching my specification document exactly.
+
+But here's the catch that applies to all these tools: your tasks are subject to interpretation - both yours and the AI's. Even with the best specifications, there's always ambiguity about user experience, error handling, performance requirements.
+
+The Spec vs Vibe Coding Revelation: When to Plan and When to Flow
+
+
+
+Article content
+Here's something I discovered recently that changed how I think about AI-powered development: the magic happens when you combine Kiro's spec approach with pure vibe coding at the right moments.
+
+I was building a software project using Kiro's .spec feature - you know, doing everything "right." Proper planning, detailed specifications, well-thought-out architecture. The spec process forces you to think through all the edge cases, the user flows, the technical requirements. It's methodical, it's thorough, it's... sometimes completely wrong for what you actually need.
+
+Halfway through the project, I realized something crucial: spec is incredible for planning and backend logic, but vibe coding is absolutely killer for frontend and UI design. When I have a visual in my head - that perfect layout, that smooth animation, that intuitive user interaction - trying to describe it in a spec document is like trying to explain color to someone who's never seen.
+
+So I did something that felt crazy at the time: I canceled the entire software project I was building with spec and started vibe coding it from scratch. And you know what? That was it. I was able to get those frontend designs that were floating around in my mind out into reality.
+
+Vibe coding doesn't care about your detailed specifications when you're trying to nail that perfect color gradient or get the hover animation just right. It responds to your creative flow, your aesthetic sense, your intuitive understanding of what feels good in a user interface.
+
+But here's the key insight: combining both approaches isn't just additive - it's multiplicative. Use spec for the foundation, the data models, the business logic, the technical architecture. Get all that thinking done upfront. Then switch to vibe mode for the presentation layer, the user experience, the visual polish.
+
+The spec gives you the solid foundation so your vibe coding doesn't result in technical debt. The vibe coding gives you the creative freedom so your spec doesn't result in boring, functional-but-uninspiring interfaces.
+
+I'm convinced this hybrid approach is going to be the future of AI-assisted development. Not choosing between planning and intuition, but knowing when to use each one.
+
+The Supabase Trap: When AI Chooses Your Tools For You
+
+As a senior engineer, I can be specific about third-party integrations - database, auth, email services, everything. But I've noticed these AI tools gravitating toward the same set of "safe" choices for everything: Supabase for auth and database, Vercel for deployment, Tailwind for styling.
+
+I have nothing against any of these tools - they're all solid choices. But when your AI consistently says "I'm really good with this set of tools, so let's use these," what are you giving up in terms of learning and architectural diversity?
+
+Here's the thing: I deliberately try different tools not just to get work done, but to learn. I've learned about databases from using MongoDB's document structure, Postgres's relational power, EdgeDB's modern approach to schemas. Each one taught me about problems and solutions I never knew existed.
+
+When I use MongoDB, I learn about denormalization strategies and how to handle complex nested data. PostgreSQL teaches me about ACID compliance and complex queries. EdgeDB shows me what databases could look like if we designed them today instead of in the 1970s.
+
+Using unfamiliar tools and frameworks is how you discover problems you didn't know you had and solutions you never would have considered.
+
+But AI tools tend to stick with what they know well. They're optimized for success rate, not learning rate. So they'll recommend the combination that's most likely to work, not the combination that's most likely to teach you something new.
+
+This creates a weird feedback loop where the more we rely on AI for technical decisions, the more homogeneous our tech stacks become. Everyone ends up building similar applications with similar architectures using similar tools.
+
+I'm not saying we should deliberately choose harder tools just for the learning experience. But I am saying we should be intentional about when we let AI make these decisions for us versus when we want to explore alternatives.
+
+The Consumerism Problem: Building Million-Dollar Guesses
+
+We're building the next set of tools for customers, but here's the uncomfortable truth: we don't really know what we're doing. We hope to figure it out as we go, spending millions to deliver services that we'll probably have to rebuild once we understand the problem better.
+
+This isn't necessarily bad - iteration is how innovation works. But there's a difference between intentional experimentation and expensive guessing.
+
+The problem is that AI tools make it so easy to build things that we've stopped asking whether we should build them. Got an idea? Throw it at Claude, get an MVP in a day, ship it and see what happens. The low cost of initial development masks the high cost of building the wrong thing.
+
+I've seen startups burn months building elaborate AI-powered features that users didn't want, all because the AI made it seem easy to build. The real skill isn't building fast - it's figuring out what to build.
+
+But here's the question that keeps me up at night: are we truly learning from these experiments, or are just the AI models learning?
+
+When we build something with AI assistance and it fails, who learned the lesson? Did we learn something about our users, our market, our assumptions? Or did we just add another data point to the AI's training about what doesn't work?
+
+To truly learn, you need to interrupt well. You need to be able to step in when things are going wrong and understand why. LangGraph excels at this - when you're running a task and reading the AI's thinking process, you can interrupt and redirect when it's going down the wrong path.
+
+Some models completely lose their shit when interrupted. They forget context, start over from scratch, or just give up entirely. Kiro + Sonnet 4 is the best combination I've seen at handling interruptions. It understands why you're redirecting and gets back on track smoothly.
+
+But even the "best" combination struggles when the person doing the prompting doesn't know what they want, and more importantly, doesn't know what they don't know.
+
+Autonomous AI: The Cron Job Revolution Nobody's Talking About
+
+Here's something I've been experimenting with that I think represents the future: AI agents that take action based on time, not just prompts. Think cron jobs, but intelligent.
+
+Most AI interactions right now are reactive. You ask, it responds. But what if your AI was proactively monitoring your work, your patterns, your blind spots?
+
+I've been building systems where AI agents run scheduled tasks in the background. They analyze my coding patterns, my productivity cycles, my common mistakes. Then they surface insights or take actions without me asking.
+
+For example, I have an agent that monitors my GitHub commits and notices when I'm making the same type of bug repeatedly. Instead of waiting for me to ask for help, it proactively suggests better patterns or tools that could prevent these issues.
+
+Another agent tracks my content creation and notices gaps. "Hey Osarenren, you haven't written about database optimization in three months, but you've been working on performance issues. Your audience might benefit from those learnings."
+
+This is the kind of proactive AI assistance that could transform how we work. Instead of AI being a powerful but passive tool, it becomes an active collaborator that helps us see our own patterns and blind spots.
+
+The technical implementation involves combining scheduled jobs with context-aware AI systems. The AI needs to understand not just what you're doing, but what you usually do, what you care about, what you're trying to achieve.
+
+The Solution: Learning Through Productive Distraction
+
+Here's how I actually learn: through distraction and external reminders, especially when I'm not trying to learn. Some of my best insights come when I'm focused on something else entirely and a random observation breaks through.
+
+Imagine your agent running a task while a separate background process focused on learning runs simultaneously. This process has randomness and awareness built in:
+
+"Hey Osarenren, I don't want to distract you - your task is still running - but I noticed something about the problems you're facing and the questions you're asking. I can tell you're new to SQL with Supabase. There's a macOS version of their CLI you can run in terminal so you don't have to copy-paste SQL in the dashboard. Or better yet, how about we use MongoDB for this implementation, then I'll walk you through migrating to Supabase once we're done?"
+
+This kind of contextual, educational interruption could be game-changing. The AI isn't just helping you complete tasks - it's actively helping you become better at the work itself.
+
+The key is making these interruptions valuable rather than annoying. They need to be:
+
+Contextually relevant to what you're working on
+Timed appropriately (not when you're in deep focus)
+Educational rather than just directive
+Optional (you can dismiss them without breaking your flow)
+
+I've been prototyping systems like this, and the early results are promising. Instead of just getting work done faster, I'm actually learning new techniques, discovering better tools, understanding my own patterns.
+
+But building this requires solving some interesting technical challenges. The AI needs to maintain context across long periods, understand your current mental state, and make judgments about when to interrupt and when to stay quiet.
+
+The Learning Paradox: Fast Results, Zero Growth
+
+I've spent countless hours vibe coding and ended up with products but learned nothing. Nothing about the tools I was using, nothing about myself as a developer, nothing about the underlying systems. I just got what I asked for - or what I thought I asked for.
+
+This is the hidden cost of AI-powered development that nobody talks about in the glossy blog posts and success stories: we're optimizing for speed and output while accidentally optimizing away learning and understanding.
+
+When Claude writes a complex React component for me, I can copy-paste it and move on. It works, tests pass, users are happy. But I haven't learned anything about React patterns, performance considerations, or accessibility concerns that might matter for my next component.
+
+When GitHub Copilot autocompletes a tricky algorithm, I save time but miss the opportunity to understand the underlying logic, the trade-offs involved, the edge cases that matter.
+
+This creates a dangerous feedback loop. The more I rely on AI to solve problems, the less capable I become of solving similar problems myself. My skills atrophy while my productivity metrics improve.
+
+But here's what's even more concerning: I'm not just losing technical skills. I'm losing the problem-solving intuition that comes from wrestling with difficult challenges. The "spidey sense" that tells you when something feels wrong, even if you can't articulate why.
+
+Some of my best learning experiences have come from spending hours debugging a problem that an AI could have solved in minutes. Not because the struggle was inherently valuable, but because the process of working through the problem taught me things that no amount of reading or AI-generated explanations could convey.
+
+The solution isn't to avoid AI tools - they're genuinely useful and here to stay. The solution is to be more intentional about when we use them and how we use them.
+
+Interruption as Education: Why LangGraph and others gets It Right
+
+The ability to interrupt an AI system isn't just a nice-to-have feature - it's fundamental to learning and maintaining control over the development process.
+
+Most AI interactions are black boxes. You send in a prompt, you get back a result. If the result is wrong or suboptimal, you can try again, but you don't get insight into the AI's reasoning process.
+
+LangGraph changes this by making the AI's decision-making process visible and interruptible. You can see the steps it's taking, understand its reasoning, and intervene when it's going down the wrong path.
+
+This creates opportunities for education that traditional AI interactions miss. When you interrupt an AI system, you're not just correcting it - you're teaching it about your preferences, your constraints, your understanding of the problem.
+
+But more importantly, the act of interrupting forces you to articulate what's wrong with the AI's approach. This articulation process often leads to insights about the problem that you wouldn't have had otherwise.
+
+I've had experiences where I started to interrupt an AI system, then realized that my objection was based on an assumption that was actually wrong. The process of formulating the interruption helped me identify and correct my own misunderstanding.
+
+The best AI development tools of the future will be designed around this kind of interactive learning. Not just faster ways to generate code, but better ways to understand problems and evaluate solutions.
+
+The Future of Human-AI Collaboration
+
+We're still in the early days of figuring out how humans and AI should work together effectively. Most current approaches treat AI as either a replacement for human skills or a more powerful version of existing tools.
+
+But I think the future looks different. AI won't replace human judgment and creativity - it'll augment them in ways that make both humans and AI more capable than either could be alone.
+
+This requires building AI systems that are designed for collaboration rather than automation. Systems that can explain their reasoning, accept feedback, adapt to human working styles, and actively help humans learn and grow.
+
+It also requires humans who understand how to work effectively with AI. Not just how to write good prompts, but how to maintain agency and learning in AI-augmented workflows.
+
+The developers who thrive in this future won't be those who can generate code fastest with AI assistance. They'll be those who can leverage AI to explore more possibilities, understand problems more deeply, and build solutions that neither human nor AI could create alone.
+
+The Path Forward: Curiosity Over Hype
+
+This AI era has just begun, and there's massive work to be done from multiple angles. The tools we have today are impressive but still primitive compared to what's coming.
+
+For those scared of AI taking their jobs: get curious. The jobs that AI will replace are the ones that can be reduced to predictable patterns. The jobs that will remain are those that require creativity, judgment, and the ability to work with AI as a collaborator rather than competitor.
+
+For those trying to build the next AI unicorn: understand what you're actually building. The market is flooded with AI-powered tools that solve problems nobody has. Focus on real user needs, not just technical possibilities.
+
+For those waiting for big tech to release the next tool: stop waiting and start experimenting. The most interesting innovations are happening at the edges, in small teams building specific solutions to specific problems.
+
+Use these tools without the influence of hype or fear. Think like a scientist. Form hypotheses, run experiments, measure results, learn from failures. Remember that the goal isn't just to build faster - it's to build better while becoming a better builder yourself.
+
+The future belongs to those who can harness AI's power while maintaining their curiosity, critical thinking, and deep understanding of the systems they're creating.
+
+We're not just building AI tools - we're defining how humans and AI will work together for decades to come. That's a responsibility worth taking seriously.
+
+After all, as I always say: "I love how you learn."

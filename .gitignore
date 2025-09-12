@@ -1,0 +1,30 @@
+.vercel
+node_modules/
+
+# Next.js build output
+.next/
+
+# Environment files (do not commit secrets)
+.env
+.env.*
+!.env.example
+
+# Editor/IDE and local tooling
+.vscode/
+.idea/
+.qodo/
+
+# OS / misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts
+dist/
+out/
+coverage/
+
+# CI/project meta (keep ignored to avoid implying non-Kiro tooling)
+.github/

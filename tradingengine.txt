@@ -1,0 +1,10 @@
+Here's how i think the trading works. I'm sure oanda tracks if the trade placed has hit sl or tp so, 
+i'm sure we're keeping track from there. The live trade should be a page that the client can refresh
+when he/her needs to so that it doesn't just always refresh, or maybe auto refresh is better. 
+THe live trades section should show the following. 
+1. The following four prices. a. price of entry, b. price of tp, c. price of sl, d. current. 
+2. It should show if the tp or the sl has hit at any point. If the tp has hit, the there should be a success badge on the
+trade and if the sl was hit then a failed badge on the trade. If the trade is still running then it should show that.
+3. IT should show the account that the trade was placed on, if it was a standard or a pro acount and the challange account, $5k
+or $10k or $25k. 
+4. It should show the time the trade was taken, okay. 

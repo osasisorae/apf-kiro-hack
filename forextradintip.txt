@@ -1,0 +1,20 @@
+U.S Spring / Summer Session
+Session	GMT	EST
+Sydney Open	22:00	18:00
+Sydney Close	07:00	03:00
+Tokyo Open	23:00	19:00
+Tokyo Close	08:00	04:00
+London Open	07:00	03:00
+London Close	16:00	12:00
+New York Open	12:00	08:00
+New York Close	21:00	17:00
+U.S Autumn / Winter Session
+Session	GMT	EST
+Sydney Open	21:00	16:00
+Sydney Close	06:00	01:00
+Tokyo Open	23:00	18:00
+Tokyo Close	08:00	03:00
+London Open	08:00	03:00
+London Close	17:00	12:00
+New York Open	13:00	08:00
+New York Close	22:00	17:00

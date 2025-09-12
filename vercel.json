@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/waitlist.js": {
+      "maxDuration": 10
+    },
+    "api/admin/waitlist.js": {
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "DATABASE_URL": "@database_url"
+  }
+}
